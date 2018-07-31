@@ -1,0 +1,254 @@
+body {
+	background-color: #000;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
+	-webkit-font-smoothing: subpixel-antialiased !important;
+}
+
+* {
+    text-shadow: 0.01em 0.01em 0.05em #3C3C3C !important;
+}
+
+
+.bd-callout {
+	margin: 10px 0;
+	padding: 15px;
+	border-left: 3px solid #eee;
+}
+
+.bd-callout-warning {
+	border-left-color: #f0ad4e;
+	background-color: #faf8f0;
+}
+
+.bd-callout-tips {
+	border-left-color: #62d380;
+	background-color: #e6f8e9;
+}
+
+.prebg {
+	width: 100%;
+	float: left;
+	transition: all 1.5s ease;
+	filter: blur(7px); 
+	-webkit-filter: blur(7px); 
+    -moz-filter: blur(7px);
+    -ms-filter: blur(7px); 
+}
+
+.prebg:hover {
+	transition: all 1s ease;
+	filter: blur(0px); 
+	-webkit-filter: blur(0px); 
+    -moz-filter: blur(0px);
+    -ms-filter: blur(0px); 
+}
+
+.bg {
+	background-attachment: fixed;
+	background-color: #272833;
+	background: #000;
+	background-position: center center;
+	background-size: cover;
+	box-shadow: 0 0.25em 0.5em 0 rgba(0, 0, 0, 0.25);
+	min-height: 100vh;
+	position: relative;
+	text-align: center;
+	background-repeat: no-repeat;
+	opacity: 0;
+	animation-delay: 0s;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease;
+}
+
+    @keyframes fadein {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+.nowplaying {
+	-webkit-animation-delay: 0.3s;
+}
+
+body,form,div,ul,ol,li,h1,h2,h3,h4,h5,h6,table,tr,th,td,p,input,dl,dt,dd,ul,ol,li,input,textarea {
+	font-family: "Microsoft Yahei"!important;
+}
+
+.lastfm {
+	width: 80%;
+	margin-right: 5px;
+	margin-left: 10%;
+	color: #fff;
+	margin-top: 50px;
+	position: fixed;
+}
+
+.lastfm ul {
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+.lastfm ul li {
+	clear: both;
+	padding: 3px;
+	position: relative;
+	overflow: hidden;
+	min-height: 75px;
+}
+
+.trackimg {
+	float: right;
+	margin: 10px 5px 5px 0px;
+	border-radius: 100%;
+	top: 28vh;
+	position: fixed;
+	right: 7vw;
+	width: 23vw;
+	height: 23vw;
+	-webkit-animation-duration: 2s;
+	background: rgba(255, 255, 255, 0)!important;
+}
+
+.lastfm ul li:nth-child(even) {
+	background: #EEF5FF;
+}
+
+.lastfm ul li .track {
+	font-size: 4.5vw;
+	font-weight: 500;
+	margin-bottom: 5px;
+	position: fixed;
+	top: 41vh;
+	left: 14vw;
+	width: 53vw;
+	-webkit-animation-duration: 2s;
+}
+
+.lastfm ul li .artist {
+	margin: 0px;
+	font-size: 6vh;
+	position: fixed;
+	top: 29vh;
+	-webkit-animation-duration: 3s;
+}
+
+.lastfm ul li .album {
+	margin: 0px;
+	font-size: 3vh;
+	position: fixed;
+	bottom: 10px;
+	color: #908e8e8f;
+	font-weight: 200;
+	text-shadow: 1px 2px 3px rgba(0, 0, 0, 0.8);
+}
+
+.lastfm ul li .date {
+	margin: 10px;
+	font-size: 3vh;
+	color: #fff;
+	float: right;
+	position: fixed;
+	font-weight: 100;
+}
+
+.date {
+	position: absolute;
+}
+
+.loading {
+	font-size: 8vh;
+	font-weight: 300;
+	margin-bottom: 5px;
+	position: fixed;
+	top: 50%;
+	left: 35%;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+	width: 5px;
+	background-color: #CCC;
+	-webkit-border-radius: 6px
+}
+
+::-webkit-scrollbar-track-piece {
+	background-color: #FFF;
+	-webkit-border-radius: 0
+}
+
+::-webkit-scrollbar {
+	width: 5px;
+	height: 8px
+}
+
+::-webkit-scrollbar-thumb:vertical {
+	height: 50px;
+	border: 0 solid #FFF;
+	background-color: #999;
+	-webkit-border-radius: 4px;
+	outline: 1px solid #FFF
+}
+
+::-webkit-scrollbar-thumb:hover {
+	height: 50px;
+	background-color: #9F9F9F;
+	-webkit-border-radius: 4px
+}
+
+#result img {
+	border-radius: 100%;
+}
+
+@media screen and (max-width: 800px) {
+	.loading {
+		left: 12vw;
+		font-size: 9vw;
+	}
+
+	.lastfm ul li .artist {
+		left: 0;
+		width: 100%
+	}
+	
+	.lastfm ul li .artist p {
+	text-align: center;
+	}
+	
+	.lastfm ul li img {
+		display: none;
+	}
+
+	.lastfm {
+		width: 80%;
+		margin-right: 5px;
+		margin-left: 2vw;
+		color: #fff;
+		margin-top: 50px;
+		position: fixed;
+	}
+
+	.lastfm ul li .album {
+		margin: 0px;
+		font-size: 4vw;
+		position: fixed;
+		bottom: 10px;
+		color: #908e8e8f;
+		font-weight: 200;
+	}
+
+	.lastfm ul li .track {
+		left:0;
+		top: 43vh;
+		width: 100%;
+		font-size: 7vw;
+	}
+	
+		.lastfm ul li .track p{
+		text-align: center;
+		font-size:8vw;
+	}
+}

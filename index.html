@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta charset="utf-8">
+<meta name="description" content="同步自己的实时音乐播放记录">
+<meta name="author" content="Finer04">
+<title>NOWPlaying</title>
+<!-- Bootstrap 核心 CSS 和 自定义 CSS -->
+<link href="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- 导航栏 -->
+<nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: rgba(0,0,0, 0.3);">
+<div class="container">
+	<a class="navbar-brand" href="#" data-toggle="modal" data-target="#em">NOWPlaying</a>
+	<div class="collapse navbar-collapse" id="navbarResponsive">
+		<ul class="navbar-nav ml-auto">
+			<li class="nav-item active">
+			<a class="nav-link" href="index.html"><i class="fa fa-refresh" aria-hidden="true"></i>	Refresh</a>
+			</li>
+			<li class="nav-item">
+			<a class="nav-link" href="#" data-toggle="modal" data-target="#lastfminfo"><i class="fa fa-info-circle" aria-hidden="true"></i>	My Last.fm Info</a>
+			</li>
+		</ul>
+	</div>
+</div>
+</nav>
+
+<!-- 网页主体 -->
+<div class="prebg">
+
+</div>
+		<div id="lastBox" class="lastfm">
+			<div class="loading animated fadeIn">
+			Initialize the script...
+</div>
+	</div>
+</div>
+
+<!-- 模态框 -->
+<div class="modal fade " id="em" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="ModalLabel">小吐槽</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="bd-callout bd-callout-tips">
+					 本实时播放页面的介绍: <a href="https://finer04.pw/archives/make-lastfm-nowplaying-page.html">自己的 Last.fm 实时播放的同步页面</a>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade " id="lastfminfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="ModalLabel">About My Last.fm</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div id="result">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"  data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" onclick="window.open('https://www.last.fm/zh/user/Finer04')">Enter My last.fm page</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- JQuery 和 Bootstrap 核心 JS / 延迟加载 -->
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+<link href="css/full.css" rel="stylesheet">
+<script src="lastfm.jquery.js"></script>
+<script src="lazyload.min.js"></script>
+<!-- 后续脚本初始化与ajax初始化 -->
+
+<script>
+	$(document).ready(function() {
+	NProgress.start();
+		$('#lastBox').lastplayed({
+			apikey:			'6fedfd312dc47a4de168502018c02ca3',
+			username:		'Finer04',
+			limit:			1,
+			coversize:		300,
+			refresh:		7,
+		});
+		$.ajax({
+			type:"GET",
+			url:"https://ws.goubi.me/2.0/?method=user.getinfo&user=finer04&api_key=6fedfd312dc47a4de168502018c02ca3&format=json",
+			dataType:"json",
+			async : true,
+			success:function(data){
+				var user="<div class='container'>";
+				$.each(data,function(i,n){	
+					user+="<div class='row'><div class='col-md5' style='margin-left:15px;'>"+"<img src="+n.image[2]['#text'] +'" title="profile photo" data-toggle="tooltip" data-placement="bottom"></div>';
+					user+="<div class='col-md-1'></div><div class='col-md-6'>"+"<h3>Username</h3>"+"<p>"+n.name+"</p><br>";
+					user+="<h3>Scrobbles</h3>"+"<p>"+n.playcount+" 次</p></div></div>";
+				});
+				$('#result').append(user);
+			}
+		});
+		return false;
+	});
+	</script>
+</body>
+</html>
