@@ -7,18 +7,38 @@ Athor: Ringo Rohe
 */
 
 (function ($) {
+	
+	var bg;
 
-	function addFadeInBackground(url, domclass) {
-									  var background = new Image();
-									  background.src = url;
-									  background.onload = function () {
-										console.log('Background load complete!');
-										var loadbackground = document.getElementsByClassName(domclass);
-										loadbackground[0].style.background =  'linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),url(' + background.src + ') fixed no-repeat center center';
-										loadbackground[0].style.animationName = 'fadein';
-										loadbackground[0].style.backgroundSize = 'cover';
-									  }
-									}
+	function addFadeInBackground(url) {
+			var background = new Image();
+			background.src = url;
+			background.onload = function () {
+			console.log('Background load complete!');
+			console.log('当前backgroud.src为：'+background.src);
+			console.log('当前src为：'+url);
+			$('.bg').css({"background": "linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),url(" + background.src + ") fixed no-repeat center center",
+			'animation-name':'fadein',
+			'background-size':'cover'});
+			}}
+			
+			var useravater;
+		$.ajax({
+			type:"GET",
+			url:"https://ws.goubi.me/2.0/?method=user.getinfo&user=finer04&api_key=6fedfd312dc47a4de168502018c02ca3&format=json",
+			dataType:"json",
+			async : false,
+			success:function(data){
+				var user="<div class='container'>";
+				$.each(data,function(i,n){	
+				useravater = n.image[2]['#text'];
+					user+="<div class='row'><div class='col-md5' style='margin-left:15px;'>"+"<img src="+n.image[2]['#text'] +'" title="profile photo" data-toggle="tooltip" data-placement="bottom"></div>';
+					user+="<div class='col-md-1'></div><div class='col-md-6'>"+"<h3>Username</h3>"+"<p>"+n.name+"</p><br>";
+					user+="<h3>Scrobbles</h3>"+"<p>"+n.playcount+" 次</p></div></div>";
+				});
+				$('#result').append(user);
+			}
+		});
 
 	var recentTracksClass = function (elem, options) {
 
@@ -92,6 +112,7 @@ Athor: Ringo Rohe
 							lastCurrentPlaying = track;
 							tracknowplaying = true;
 							$list.children('li.nowplaying').remove();
+							addFadeInBackground("/");
 							$('.bg').remove();
 							NProgress.start();
 							NProgress.inc();
@@ -109,20 +130,22 @@ Athor: Ringo Rohe
 						// ----------------- IMAGE -----------------
 						if (options.cover) {
 							if (track.image[3]['#text']) {
+								bg = track.image[3]['#text'];
 								var $cover = $("<img>", {
 									alt: track.artist['#text'],
-									'data-original': track.image[3]['#text'],
+									'data-original': bg,
 									src : "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
 									class: "lazy trackimg animated infinite pulse ",
 									draggable:  "false",
 									}).lazyload({
 										effect : "fadeIn",
 										load:function(){
-										NProgress.done();}
+										NProgress.done();
+										$("<div>").addClass("bg").appendTo(".prebg");
+										addFadeInBackground(bg);
+										}
 									}).appendTo(listitem);
 									
-							$("<div>").css('background',"none").addClass("bg").appendTo(".prebg")
-							addFadeInBackground(track.image[3]['#text'], 'bg');
 									
 								if(options.coverlinks){
 									var coverpath = [
@@ -142,15 +165,28 @@ Athor: Ringo Rohe
 						if (options.datetime) {
 										
 							if (tracknowplaying) {
-								dateCont = '<i class="fa fa-lastfm"></i>  '+options.username+' is listening to...';
+								dateCont = '<img src="' + useravater +'" class="rounded-circle" height="26" width="26"> '+options.username+' is listening to...';
 								
 							} else {
-								ts = new Date(tracktime * 1000);
-								dateCont = 'Last played : ' + makeTwo(ts.getMonth())+'.'+makeTwo(ts.getDate()+1)+' - '+makeTwo(ts.getHours())+':'+makeTwo(ts.getMinutes());
+								ts = new Date(parseInt(tracktime * 1000));
+								var month=new Array(12)
+								month[0]="January"
+								month[1]="February"
+								month[2]="March"
+								month[3]="April"
+								month[4]="May"
+								month[5]="June"
+								month[6]="July"
+								month[7]="August"
+								month[8]="September"
+								month[9]="October"
+								month[10]="November"
+								month[11]="December"
+								dateCont = 'Last played : ' + month[ts.getMonth()]+'  '+ts.getDate()+ ', '+ ts.getFullYear() +' / '+ts.getHours()+':'+makeTwo(ts.getMinutes());
 							}
 
 							$("<div>", {
-								class: "date animated fadeInDown",
+								class: "date lead animated fadeInDown",
 								html: dateCont
 							}).appendTo(listitem);
 						}
@@ -229,6 +265,8 @@ Athor: Ringo Rohe
 					lastCurrentPlaying = false;
 					//remove old nowplaying entry
 					$list.children('li.nowplaying').remove();
+					addFadeInBackground("/");
+					$('.bg').remove();
 				}
 
 				//throw old entries away

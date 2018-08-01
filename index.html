@@ -105,23 +105,11 @@
 			coversize:		300,
 			refresh:		7,
 		});
-		$.ajax({
-			type:"GET",
-			url:"https://ws.goubi.me/2.0/?method=user.getinfo&user=finer04&api_key=6fedfd312dc47a4de168502018c02ca3&format=json",
-			dataType:"json",
-			async : true,
-			success:function(data){
-				var user="<div class='container'>";
-				$.each(data,function(i,n){	
-					user+="<div class='row'><div class='col-md5' style='margin-left:15px;'>"+"<img src="+n.image[2]['#text'] +'" title="profile photo" data-toggle="tooltip" data-placement="bottom"></div>';
-					user+="<div class='col-md-1'></div><div class='col-md-6'>"+"<h3>Username</h3>"+"<p>"+n.name+"</p><br>";
-					user+="<h3>Scrobbles</h3>"+"<p>"+n.playcount+" 次</p></div></div>";
-				});
-				$('#result').append(user);
-			}
-		});
+
 		return false;
 	});
+	
+	
 	</script>
 </body>
 </html>

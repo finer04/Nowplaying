@@ -37,6 +37,7 @@ body {
 	-webkit-filter: blur(7px); 
     -moz-filter: blur(7px);
     -ms-filter: blur(7px); 
+	overflow: hidden;
 }
 
 .prebg:hover {
@@ -63,11 +64,13 @@ body {
     animation-duration: 2s;
     animation-fill-mode: forwards;
     animation-timing-function: ease;
+	transition: all 1s;
+	overflow: hidden;
 }
 
     @keyframes fadein {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
+      0% { opacity: 0;  transform: scale(1.25, 1.25); }
+      100% { opacity: 1;  }
     }
 
 .nowplaying {
@@ -147,13 +150,16 @@ body,form,div,ul,ol,li,h1,h2,h3,h4,h5,h6,table,tr,th,td,p,input,dl,dt,dd,ul,ol,l
 	text-shadow: 1px 2px 3px rgba(0, 0, 0, 0.8);
 }
 
+.date img {
+	margin-right:0.3em;
+	margin-top:-3px;
+}
+
 .lastfm ul li .date {
 	margin: 10px;
-	font-size: 3vh;
 	color: #fff;
 	float: right;
 	position: fixed;
-	font-weight: 100;
 }
 
 .date {
