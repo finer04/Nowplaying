@@ -8,26 +8,26 @@ Athor: Ringo Rohe
 
 (function ($) {
 	
-	var bg;
-
-	function addFadeInBackground(url) {
+	
+		function addbgimage(url) {
 			var background = new Image();
 			background.src = url;
 			background.onload = function () {
-			console.log('Background load complete!');
 			console.log('当前backgroud.src为：'+background.src);
-			console.log('当前src为：'+url);
-			$('.bg').css({"background": "linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),url(" + background.src + ") fixed no-repeat center center",
-			'animation-name':'fadein',
-			'background-size':'cover'});
-			}}
+			var $bg = $("<div>",{
+				class: 'bg',
+				style: "background : linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),url(" + background.src + ") fixed no-repeat center center; animation-name: fadein ; background-size:cover; "
+			}).appendTo('.prebg')
+			}
 			
+			}
+
 			var useravater;
 		$.ajax({
 			type:"GET",
 			url:"https://ws.goubi.me/2.0/?method=user.getinfo&user=finer04&api_key=6fedfd312dc47a4de168502018c02ca3&format=json",
 			dataType:"json",
-			async : false,
+			async : true,
 			success:function(data){
 				var user="<div class='container'>";
 				$.each(data,function(i,n){	
@@ -112,7 +112,6 @@ Athor: Ringo Rohe
 							lastCurrentPlaying = track;
 							tracknowplaying = true;
 							$list.children('li.nowplaying').remove();
-							addFadeInBackground("/");
 							$('.bg').remove();
 							NProgress.start();
 							NProgress.inc();
@@ -130,10 +129,9 @@ Athor: Ringo Rohe
 						// ----------------- IMAGE -----------------
 						if (options.cover) {
 							if (track.image[3]['#text']) {
-								bg = track.image[3]['#text'];
 								var $cover = $("<img>", {
 									alt: track.artist['#text'],
-									'data-original': bg,
+									'data-original': track.image[3]['#text'],
 									src : "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
 									class: "lazy trackimg animated infinite pulse ",
 									draggable:  "false",
@@ -141,10 +139,11 @@ Athor: Ringo Rohe
 										effect : "fadeIn",
 										load:function(){
 										NProgress.done();
-										$("<div>").addClass("bg").appendTo(".prebg");
-										addFadeInBackground(bg);
+										console.log('image 加载到了：'+track.image[3]['#text']);
+										addbgimage(track.image[3]['#text']);
 										}
 									}).appendTo(listitem);
+									
 									
 									
 								if(options.coverlinks){
@@ -158,6 +157,8 @@ Athor: Ringo Rohe
 										target: options.linktarget
 									}));
 								}
+								
+								
 							}
 						}
 
@@ -265,8 +266,6 @@ Athor: Ringo Rohe
 					lastCurrentPlaying = false;
 					//remove old nowplaying entry
 					$list.children('li.nowplaying').remove();
-					addFadeInBackground("/");
-					$('.bg').remove();
 				}
 
 				//throw old entries away

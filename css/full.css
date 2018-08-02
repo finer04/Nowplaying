@@ -224,8 +224,12 @@ body,form,div,ul,ol,li,h1,h2,h3,h4,h5,h6,table,tr,th,td,p,input,dl,dt,dd,ul,ol,l
 	text-align: center;
 	}
 	
-	.lastfm ul li img {
-		display: none;
+	.nowplaying ul li img {
+		visibility:hidden;
+	}
+	
+	.trackimg {
+		visibility:hidden;
 	}
 
 	.lastfm {
