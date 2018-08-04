@@ -5,35 +5,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta charset="utf-8">
 <meta name="description" content="同步自己的实时音乐播放记录">
-<meta http-equiv="refresh" content="240"> 
+<meta http-equiv="refresh" content="500"> 
 <meta name="author" content="Finer04">
 <title>NOWPlaying</title>
 <!-- Bootstrap 核心 CSS 和 自定义 CSS -->
-<link href="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
 <link href="https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+<link href="css/full.css?ver=1.3" rel="stylesheet">
 </head>
 
-<body>
+<body >
 <!-- 导航栏 -->
-<nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: rgba(0,0,0, 0.3);">
-<div class="container">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: rgba(0,0,0, 0.3);"
+<div class="container-fluid">
 	<a class="navbar-brand" href="#" data-toggle="modal" data-target="#em">NOWPlaying</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 	<div class="collapse navbar-collapse" id="navbarResponsive">
-		<ul class="navbar-nav ml-auto">
+		<ul class="navbar-nav ">
 			<li class="nav-item active">
 			<a class="nav-link" href="index.html"><i class="fa fa-refresh" aria-hidden="true"></i>	Refresh</a>
 			</li>
+		</ul>
+		<ul class="navbar-nav ml-md-auto">
 			<li class="nav-item">
 			<a class="nav-link" href="#" data-toggle="modal" data-target="#lastfminfo"><i class="fa fa-info-circle" aria-hidden="true"></i>	My Last.fm Info</a>
 			</li>
 		</ul>
+
 	</div>
 </div>
 </nav>
 
 <!-- 网页主体 -->
-<div class="prebg">
+<div id="prebg">
 </div>
 		<div id="lastBox" class="lastfm">
 			<div class="loading animated fadeIn">
@@ -53,6 +60,10 @@
 				</button>
 			</div>
 			<div class="modal-body">
+				<div class="bd-callout bd-callout-tips">
+				<p>核心代码基于 dcneiner/lastfm-recent-tracks-jquery-plugin 进行二次改造</p>
+					 <a href="https://github.com/finer04/Nowplaying">https://github.com/finer04/Nowplaying</a>
+				</div>
 				<div class="bd-callout bd-callout-tips">
 					 本实时播放页面的介绍: <a href="https://finer04.pw/archives/make-lastfm-nowplaying-page.html">自己的 Last.fm 实时播放的同步页面</a>
 				</div>
@@ -84,14 +95,24 @@
 	</div>
 </div>
 
+<div class="pre-album border-light">
+	<div class="pre-album-img float-left">
+	</div>
+	
+	<div class="pre-album-tag">
+	<h5>previous song:</h5>
+	
+	</div>
+	</div>
+
+
 <!-- JQuery 和 Bootstrap 核心 JS / 延迟加载 -->
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
 
-<link href="css/full.css?ver=1.2.1" rel="stylesheet">
-<script src="lastfm.jquery.js?ver=1.2.1"></script>
+<script src="lastfm.jquery.js?ver=1.3"></script>
 <script src="lazyload.min.js"></script>
 <!-- 后续脚本初始化与ajax初始化 -->
 

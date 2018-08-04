@@ -6,12 +6,72 @@ body {
 	-khtml-user-select: none;
 	user-select: none;
 	-webkit-font-smoothing: subpixel-antialiased !important;
+	overflow: hidden;
 }
 
 * {
     text-shadow: 0.01em 0.01em 0.05em #3C3C3C !important;
 }
 
+.pre-album {
+	position: fixed;
+	bottom: 10vh;
+	left: 0;
+	width: auto;
+	height:9rem;
+    overflow: hidden;
+	opacity: 0;
+	background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+}
+
+
+.pre-album:before {
+    background-position: top;
+	content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.pre-album-img {
+	width: 9rem;
+    height: 9rem;
+}
+
+.pre-album-img:after {
+	background-image: linear-gradient(180deg,transparent 0,rgba(0,0,0,.35) 70%,rgba(0,0,0,.7));
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.pre-album-tag {
+	padding: 0.3rem 1.3rem;
+	float:left;
+	color: #fff;
+	max-width: 20rem;
+}
+
+.pre-album-tag .tag-songname{
+	font-weight: 800;
+	font-size: 1.5rem;
+	padding-top:1rem;
+	/* 溢出则添加省略号 */
+	white-space:nowrap; 
+	text-overflow:ellipsis;
+	overflow: hidden;
+}
+
+.pre-album-img img{
+	height:100%;
+	width:100%;
+	opacity: 0.7;
+}
 
 .bd-callout {
 	margin: 10px 0;
@@ -29,48 +89,51 @@ body {
 	background-color: #e6f8e9;
 }
 
-.prebg {
+#prebg {
 	width: 100%;
 	float: left;
-	transition: all 1.5s ease;
+	transition: all 0.7s linear;
 	filter: blur(7px); 
 	-webkit-filter: blur(7px); 
     -moz-filter: blur(7px);
     -ms-filter: blur(7px); 
 	overflow: hidden;
+	z-index:-1;
 }
 
-.prebg:hover {
-	transition: all 1s ease;
+#prebg:hover {
+	transition: all 0.7 linear;
+	filter: blur(0px); 
+	-webkit-filter: blur(0px); 
+    -moz-filter: blur(0px);
+    -ms-filter: blur(0px); 
+	overflow: hidden;
+}
+
+.prebg-on {
+	transition: all 0.7s linear;
 	filter: blur(0px); 
 	-webkit-filter: blur(0px); 
     -moz-filter: blur(0px);
     -ms-filter: blur(0px); 
 }
 
-.bg {
-	background-attachment: fixed;
-	background-color: #272833;
-	background: #000;
-	background-position: center center;
-	background-size: cover;
-	box-shadow: 0 0.25em 0.5em 0 rgba(0, 0, 0, 0.25);
+#bg {
 	min-height: 100vh;
 	position: relative;
-	text-align: center;
 	background-repeat: no-repeat;
 	opacity: 0;
-	animation-delay: 0s;
-    animation-duration: 2s;
+    animation-duration: 1.5s;
     animation-fill-mode: forwards;
     animation-timing-function: ease;
 	transition: all 1s;
 	overflow: hidden;
+	z-index:-1;
 }
 
     @keyframes fadein {
-      0% { opacity: 0;  transform: scale(1.25, 1.25); }
-      100% { opacity: 1;  }
+      0% { opacity: 0;   -webkit-transform :scale(1.25, 1.25);  transform: scale(1.25, 1.25);  }
+      100% { opacity: 1;  -webkit-transform :scale(1.25, 1.25); transform: scale(1, 1);  }
     }
 
 .nowplaying {
@@ -111,8 +174,8 @@ body,form,div,ul,ol,li,h1,h2,h3,h4,h5,h6,table,tr,th,td,p,input,dl,dt,dd,ul,ol,l
 	top: 28vh;
 	position: fixed;
 	right: 7vw;
-	width: 23vw;
-	height: 23vw;
+	width: 20rem;
+	height: 20rem;
 	-webkit-animation-duration: 2s;
 	background: rgba(255, 255, 255, 0)!important;
 }
@@ -160,6 +223,7 @@ body,form,div,ul,ol,li,h1,h2,h3,h4,h5,h6,table,tr,th,td,p,input,dl,dt,dd,ul,ol,l
 	color: #fff;
 	float: right;
 	position: fixed;
+	top: 3.5rem;
 }
 
 .date {
