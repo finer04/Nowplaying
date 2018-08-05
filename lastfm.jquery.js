@@ -7,7 +7,36 @@ Athor: Ringo Rohe
 */
 
 (function($) {
-
+		
+								
+	//地址栏获取参数，照抄 https://blog.csdn.net/FungLeo/article/details/49404789
+	   (function($){
+			$.getUrlParam= function(name)
+			{
+			var reg= new RegExp("(^|&)"+name +"=([^&]*)(&|$)");
+			var r= window.location.search.substr(1).match(reg);
+			if (r!=null) return unescape(r[2]); return 'finer04';
+			}
+			
+			})(jQuery);
+			
+			//监听 show 按钮
+			$('#showtrack').click(function(){
+			showtrack();
+			});
+			
+			$('#refresh').click(function(){
+			refresh();
+			});
+			
+			$('#saveinfo').click(function(){
+				var account = $("#settinguser").val(); 
+				if(account.length==0){
+					alert('请输入你的 Last.fm 账号名');
+				}else {
+				window.open("https://now.goubi.me/?username="+account)  }
+			});
+			
 	//移动端模拟 hover 效果，参考 https://blog.csdn.net/Maximus_ckp/article/details/78021362
 	document.body.addEventListener('touchstart', function() {});
 	var myLinks = document.querySelectorAll('#prebg');
@@ -64,20 +93,97 @@ Athor: Ringo Rohe
 	var useravater;
 	$.ajax({
 		type: "GET",
-		url: "https://ws.goubi.me/2.0/?method=user.getinfo&user=finer04&api_key=6fedfd312dc47a4de168502018c02ca3&format=json",
+		url: "https://ws.goubi.me/2.0/?method=user.getinfo&user="+ $.getUrlParam('username') +"&api_key=6fedfd312dc47a4de168502018c02ca3&format=json",
 		dataType: "json",
 		async: true,
 		success: function(data) {
 			var user = "<div class='container'>";
 			$.each(data, function(i, n) {
 				useravater = n.image[2]['#text'];
-				user += "<div class='row'><div class='col-md5' style='margin-left:15px;'>" + "<img src=" + n.image[2]['#text'] + '" title="profile photo" data-toggle="tooltip" data-placement="bottom"></div>';
-				user += "<div class='col-md-1'></div><div class='col-md-6'>" + "<h3>Username</h3>" + "<p>" + n.name + "</p><br>";
-				user += "<h3>Scrobbles</h3>" + "<p>" + n.playcount + " 次</p></div></div>";
+				$('#info-img').attr('src',useravater);
+				$('#info-username').append(n.name);
+				$('#info-scrobbles').append(n.playcount + ' 次');
 			});
-			$('#result').append(user);
 		}
 	});
+	
+	
+	//点击 show toptrack 按钮事件
+	var check = 0 ; //默认关闭showtrack状态
+	function showtrack(){
+		if(check == 0){
+		gettoptrack();
+		$('.lastfm').fadeOut(400);
+		$('.toptrack').addClass('animated zoomIn').show();
+		$('#refresh').html('Back');
+		check = 1;  //已开启showtrack
+		}
+		}
+		
+	 function refresh(){
+		 if(check == 1) {
+		 $('.toptrack').hide(400);
+		 $('.lastfm').fadeIn(1000);
+		 $('#refresh').html('Refresh');
+		  check =0;
+		 } else if (check == 0){
+			 init();
+		 }
+	 }
+		
+	//获取用户专辑排名
+	var gottrack = false;
+	function gettoptrack(){
+	var limit = 12;
+	$.ajax({
+		type: "GET",
+		url: "https://ws.goubi.me/2.0/?method=user.gettopalbums&limit="+ limit +"&period=3month&user="+ $.getUrlParam('username') +"&api_key=6fedfd312dc47a4de168502018c02ca3&format=json",
+		dataType: "json",
+		async: false,
+		success: function(data) {
+			$.each(data, function(i, rank) {
+				//对图片进行尺寸更改，并且检验是否无图
+				function checkimg(url){
+					url = url.replace(/lastfm-img2.akamaized.net/, "lastfmimg.umi.pw");
+					return  (!url) ?  'img/no.jpg' : url ;	
+				}
+				
+				//首字母大写，因为用 text-transform: capitalize 会将 's 变成大写
+				function firstUpperCase(str) {
+				return str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
+				}
+				
+				//如果获取过信息就不执行
+				if(!gottrack){
+				gottrack = true;
+				$(".toptrack h2").append(firstUpperCase($.getUrlParam('username')) +'\'s Top Tracks Ranking');
+				
+				for(i=0;i<limit;i++) {
+					makelist(rank.album[i].name, rank.album[i].artist.name , rank.album[i].playcount ,  checkimg(rank.album[i].image[3]['#text']));
+				}
+				
+				}
+			});
+		}
+	});
+	
+	}
+	
+	
+	
+	function makelist(songname,artist,playtimes,img){
+		
+		//由于生成DOM对象需要用 APPENDTO，不会应用故用字符串添加算了
+		var imgp = '<div class="col-md-3 top-track-pic"><img src="'+ img +'" class="toptrack-img rounded"></div>';
+		var info = '<div class="col top-track-info pt-2"><h4 class="top-songname">' + songname +'</h4>' + '<p class="lead">'+ artist + '</p>' + '<p class="lead">'+ playtimes  +' plays</p>';
+		
+		var base = $("<div>", {
+			class : 'col-md-3 mt-5 px-3',
+			html : imgp + info ,
+			 }).appendTo('.top-list');
+	
+	}
+	
 
 	var recentTracksClass = function(elem, options) {
 
@@ -104,7 +210,7 @@ Athor: Ringo Rohe
 				// remove error div if exists
 				$myDiv.children('.error').remove();
 
-				//create URL
+				//create URL，nowplaying用
 				var url = 'https://ws.goubi.me/2.0/?callback=?',
 					params = {
 						method: "user.getrecenttracks",
@@ -113,7 +219,8 @@ Athor: Ringo Rohe
 						user: options.username,
 						api_key: options.apikey
 					};
-
+					
+				
 
 				//sending request
 				$.getJSON(url, params, function(data) {
@@ -337,7 +444,8 @@ Athor: Ringo Rohe
 						}
 
 					});
-
+					
+					
 					if (!foundCurrentPlayingTrack) {
 						lastCurrentPlaying = false;
 						//remove old nowplaying entry
@@ -346,12 +454,20 @@ Athor: Ringo Rohe
 						$('.tag-songname').remove();
 						$('.pre-album-img').remove();
 					}
+					
+					//检查ul元素内有没有内容，如果没有就刷新，每10秒检测一次
+						setInterval(function(){
+							if($('#lastBox ul li').length == 0) {
+								$('#bg').remove();
+								init();
+							}
+							},10000);
+					
 
 					//throw old entries away
 					if (options.grow === false) {
 						while ($list.children().length > options.limit) {
 							$list.children('li').last().remove();
-
 						}
 					}
 

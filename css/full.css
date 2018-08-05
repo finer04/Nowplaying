@@ -6,12 +6,46 @@ body {
 	-khtml-user-select: none;
 	user-select: none;
 	-webkit-font-smoothing: subpixel-antialiased !important;
-	overflow: hidden;
+}
+
+html {
+    overflow: -moz-hidden-unscrollable;
+    height: 100%;
 }
 
 * {
     text-shadow: 0.01em 0.01em 0.05em #3C3C3C !important;
 }
+.toptrack::-webkit-scrollbar {display:none} /*chrome*/
+
+/* 扩展 */
+.toptrack {
+	display:none;
+	position:fixed;
+	width:100%;
+	height: 100%;
+	top:5rem;
+	color: white;
+	overflow:scroll;
+
+}
+
+.toptrack-img {
+	width: 16rem;
+    height: 16rem;
+}
+
+.toptrack-img img{
+	height:100%;
+	width:100%;
+	opacity: 0.7;
+}
+
+#updatetime {
+	padding: 5rem 0;
+}
+
+/*前一首曲子*/
 
 .pre-album {
 	position: fixed;
@@ -132,7 +166,7 @@ body {
 }
 
     @keyframes fadein {
-      0% { opacity: 0;   -webkit-transform :scale(1.25, 1.25);  transform: scale(1.25, 1.25);  }
+      0% { opacity: 0;   -webkit-transform :scale(1.25, 1.25);  transform: scale(1.5, 1.5);  }
       100% { opacity: 1;  -webkit-transform :scale(1.25, 1.25); transform: scale(1, 1);  }
     }
 
@@ -151,6 +185,7 @@ body,form,div,ul,ol,li,h1,h2,h3,h4,h5,h6,table,tr,th,td,p,input,dl,dt,dd,ul,ol,l
 	color: #fff;
 	margin-top: 50px;
 	position: fixed;
+	animation-duration:0.5s;
 }
 
 .lastfm ul {
@@ -272,6 +307,14 @@ body,form,div,ul,ol,li,h1,h2,h3,h4,h5,h6,table,tr,th,td,p,input,dl,dt,dd,ul,ol,l
 #result img {
 	border-radius: 100%;
 }
+
+@media screen and (max-height: 600px) {
+	.trackimg {
+	width: 15rem;
+    height: 15rem;
+	}
+}
+
 
 @media screen and (max-width: 800px) {
 	.loading {
