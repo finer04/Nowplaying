@@ -35,14 +35,18 @@ html {
     height: 16rem;
 }
 
-.toptrack-img img{
+.toptrack li {
+	list-style-type:none;
+}
+
+.toptrack-img li img{
 	height:100%;
 	width:100%;
 	opacity: 0.7;
 }
 
 #updatetime {
-	padding: 5rem 0;
+	height: 6rem;
 }
 
 /*前一首曲子*/

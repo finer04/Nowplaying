@@ -158,10 +158,10 @@ Athor: Ringo Rohe
 				gottrack = true;
 				$(".toptrack h2").append(firstUpperCase($.getUrlParam('username')) +'\'s Top Tracks Ranking');
 				
-				for(i=0;i<limit;i++) {
-					makelist(rank.album[i].name, rank.album[i].artist.name , rank.album[i].playcount ,  checkimg(rank.album[i].image[3]['#text']));
-				}
 				
+				for(i=0;i<limit;i++) {
+						makelist(rank.album[i].name, rank.album[i].artist.name , rank.album[i].playcount ,  checkimg(rank.album[i].image[3]['#text']));
+					}
 				}
 			});
 		}
@@ -170,18 +170,34 @@ Athor: Ringo Rohe
 	}
 	
 	
-	
+	var x = 0;
 	function makelist(songname,artist,playtimes,img){
 		
 		//由于生成DOM对象需要用 APPENDTO，不会应用故用字符串添加算了
-		var imgp = '<div class="col-md-3 top-track-pic"><img src="'+ img +'" class="toptrack-img rounded"></div>';
-		var info = '<div class="col top-track-info pt-2"><h4 class="top-songname">' + songname +'</h4>' + '<p class="lead">'+ artist + '</p>' + '<p class="lead">'+ playtimes  +' plays</p>';
+		//var imgp = '<div class="col-md-3 top-track-pic"><img src="'+ img +'" class="toptrack-img rounded"></div>';
+		//var info = '<div class="col top-track-info pt-2"><h4 class="top-songname">' + songname +'</h4>' + '<p class="lead">'+ artist + '</p>' + '<p class="lead">'+ playtimes  +' plays</p>';
 		
-		var base = $("<div>", {
-			class : 'col-md-3 mt-5 px-3',
-			html : imgp + info ,
-			 }).appendTo('.top-list');
-	
+		var info = {
+			name: "<h4>" + songname + '</h4>',
+			singer: '<p class="lead">'+ artist + '</p>' ,
+			count:  '<p class="lead">'+ playtimes  +' plays </p>',
+		};
+		
+		 $("<li>", {class : 'col-md-3 mt-5 px-3'}).appendTo('.top-list');
+		
+		var $imgp = $("<img>", {
+			class : 'col top-track-pic',
+			src: img,
+			}).wrap('<div class="col-md-3 top-track-pic"></div>');
+			
+		var $rankinfo = $('<div>' , {
+			class : 'col top-track-info pt-2',
+			html : info.name + info.singer + info.count,
+		});
+		
+		$('.top-list li').eq(x).append($imgp).append($rankinfo);
+		
+		x++;
 	}
 	
 
