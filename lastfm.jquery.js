@@ -3,12 +3,12 @@ simple last.fm jQuery plugin
 shows recently played tracks
 Athor: Ringo Rohe
        - with much help from Douglas Neiner
-	   
+
 */
 
 (function($) {
-		
-								
+
+
 	//地址栏获取参数，照抄 https://blog.csdn.net/FungLeo/article/details/49404789
 	   (function($){
 			$.getUrlParam= function(name)
@@ -17,26 +17,26 @@ Athor: Ringo Rohe
 			var r= window.location.search.substr(1).match(reg);
 			if (r!=null) return unescape(r[2]); return 'finer04';
 			}
-			
+
 			})(jQuery);
-			
+
 			//监听 show 按钮
 			$('#showtrack').click(function(){
 			showtrack();
 			});
-			
+
 			$('#refresh').click(function(){
 			refresh();
 			});
-			
+
 			$('#saveinfo').click(function(){
-				var account = $("#settinguser").val(); 
+				var account = $("#settinguser").val();
 				if(account.length==0){
 					alert('请输入你的 Last.fm 账号名');
 				}else {
 				window.open("https://now.goubi.me/?username="+account)  }
 			});
-			
+
 	//移动端模拟 hover 效果，参考 https://blog.csdn.net/Maximus_ckp/article/details/78021362
 	document.body.addEventListener('touchstart', function() {});
 	var myLinks = document.querySelectorAll('#prebg');
@@ -56,7 +56,6 @@ Athor: Ringo Rohe
 		var background = new Image();
 		background.src = url;
 		background.onload = function() {
-			console.log('当前backgroud.src为：' + background.src);
 			appendbg(background.src);
 		}
 	}
@@ -106,31 +105,33 @@ Athor: Ringo Rohe
 			});
 		}
 	});
-	
-	
+
+
 	//点击 show toptrack 按钮事件
-	var check = 0 ; //默认关闭showtrack状态
+	var check = false ; //默认关闭showtrack状态
 	function showtrack(){
-		if(check == 0){
+		if(!check){
 		gettoptrack();
 		$('.lastfm').fadeOut(400);
 		$('.toptrack').addClass('animated zoomIn').show();
 		$('#refresh').html('Back');
-		check = 1;  //已开启showtrack
+		$('animated zoomIn').removeClass('animated zoomIn');
+		check = true;  //已开启showtrack
 		}
 		}
-		
+
 	 function refresh(){
-		 if(check == 1) {
+		 if(check) {
 		 $('.toptrack').hide(400);
 		 $('.lastfm').fadeIn(1000);
+		 $('#prebg').fadeIn(600);
 		 $('#refresh').html('Refresh');
-		  check =0;
-		 } else if (check == 0){
+		  check = false;
+		 } else if (!check){
 			 init();
 		 }
 	 }
-		
+
 	//获取用户专辑排名
 	var gottrack = false;
 	function gettoptrack(){
@@ -145,20 +146,20 @@ Athor: Ringo Rohe
 				//对图片进行尺寸更改，并且检验是否无图
 				function checkimg(url){
 					url = url.replace(/lastfm-img2.akamaized.net/, "lastfmimg.umi.pw");
-					return  (!url) ?  'img/no.jpg' : url ;	
+					return  (!url) ?  'img/no.jpg' : url ;
 				}
-				
+
 				//首字母大写，因为用 text-transform: capitalize 会将 's 变成大写
 				function firstUpperCase(str) {
 				return str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
 				}
-				
+
 				//如果获取过信息就不执行
 				if(!gottrack){
 				gottrack = true;
 				$(".toptrack h2").append(firstUpperCase($.getUrlParam('username')) +'\'s Top Tracks Ranking');
-				
-				
+
+
 				for(i=0;i<limit;i++) {
 						makelist(rank.album[i].name, rank.album[i].artist.name , rank.album[i].playcount ,  checkimg(rank.album[i].image[3]['#text']));
 					}
@@ -166,40 +167,40 @@ Athor: Ringo Rohe
 			});
 		}
 	});
-	
+
 	}
-	
-	
+
+
 	var x = 0;
 	function makelist(songname,artist,playtimes,img){
-		
+
 		//由于生成DOM对象需要用 APPENDTO，不会应用故用字符串添加算了
 		//var imgp = '<div class="col-md-3 top-track-pic"><img src="'+ img +'" class="toptrack-img rounded"></div>';
 		//var info = '<div class="col top-track-info pt-2"><h4 class="top-songname">' + songname +'</h4>' + '<p class="lead">'+ artist + '</p>' + '<p class="lead">'+ playtimes  +' plays</p>';
-		
+
 		var info = {
 			name: "<h4>" + songname + '</h4>',
 			singer: '<p class="lead">'+ artist + '</p>' ,
 			count:  '<p class="lead">'+ playtimes  +' plays </p>',
 		};
-		
+
 		 $("<li>", {class : 'col-md-3 mt-5 px-3'}).appendTo('.top-list');
-		
+
 		var $imgp = $("<img>", {
 			class : 'col top-track-pic',
 			src: img,
 			}).wrap('<div class="col-md-3 top-track-pic"></div>');
-			
+
 		var $rankinfo = $('<div>' , {
 			class : 'col top-track-info pt-2',
 			html : info.name + info.singer + info.count,
 		});
-		
+
 		$('.top-list li').eq(x).append($imgp).append($rankinfo);
-		
+
 		x++;
 	}
-	
+
 
 	var recentTracksClass = function(elem, options) {
 
@@ -235,8 +236,8 @@ Athor: Ringo Rohe
 						user: options.username,
 						api_key: options.apikey
 					};
-					
-				
+
+
 
 				//sending request
 				$.getJSON(url, params, function(data) {
@@ -284,12 +285,10 @@ Athor: Ringo Rohe
 
 						if (tracktime > lasttime || (tracknowplaying && options.shownowplaying)) {
 
-							// ------------ create list item -----------
+							// 创造界面
 							listitem = $("<li>", {
 								class: tracknowplaying ? "nowplaying animated fadeIn" : ""
 							});
-
-							console.log("目前播放曲子：" + track.name + "\n 歌手：" + track.artist['#text']);
 
 							//---前一首曲子---
 							if (tracknowplaying) {
@@ -348,9 +347,6 @@ Athor: Ringo Rohe
 										}
 									}).appendTo(listitem);
 
-									console.log(nowbg);
-
-
 									if (options.coverlinks) {
 										var coverpath = [
 										track.artist['#text'], '/', track.album['#text']].join('').replace(/[\s]/gi, '+');
@@ -369,7 +365,7 @@ Athor: Ringo Rohe
 							if (options.datetime) {
 
 								if (tracknowplaying) {
-									dateCont = '<img src="' + useravater + '" class="rounded-circle" height="26" width="26">' + options.username + ' is listening to...';
+									dateCont = '<img src="' + useravater + '" class="rounded-circle" height="26" width="26"> ' + options.username + ' is listening to...';
 
 								} else {
 									ts = new Date(parseInt(tracktime * 1000));
@@ -460,8 +456,8 @@ Athor: Ringo Rohe
 						}
 
 					});
-					
-					
+
+
 					if (!foundCurrentPlayingTrack) {
 						lastCurrentPlaying = false;
 						//remove old nowplaying entry
@@ -470,7 +466,7 @@ Athor: Ringo Rohe
 						$('.tag-songname').remove();
 						$('.pre-album-img').remove();
 					}
-					
+
 					//检查ul元素内有没有内容，如果没有就刷新，每10秒检测一次
 						setInterval(function(){
 							if($('#lastBox ul li').length == 0) {
@@ -478,7 +474,12 @@ Athor: Ringo Rohe
 								init();
 							}
 							},10000);
-					
+
+					//对背景图重复添加进行监控，如果超过两个背景就删除
+							setInterval(function(){
+							$("#prebg #bg").eq(1).remove();
+						},1000);
+
 
 					//throw old entries away
 					if (options.grow === false) {
