@@ -38,153 +38,161 @@
 		</div>
 	</nav>
 	<!-- 网页主体 -->
+	<!-- 专辑图像背景 -->
 	<div id="prebg"></div>
+	<!-- 歌曲信息-->
 	<div id="lastBox" class="lastfm">
 		<div class="loading animated fadeIn">
 			Initialize the script...
 		</div>
 	</div>
-
+	<!-- 专辑播放次数排行 -->
 	<div class="toptrack py-5">
 		<div class="container">
 			<div class="row justify-content-md-center">
 				<div class="col-md-6 px-4">
 					<h2 class="text-center"></h2>
-					<p class="lead text-center">Default: Last 90 days (Top 12)</p>
+					<p class="lead text-center"></p>
+					<div class="spinner">
+						<div class="double-bounce1"></div>
+						<div class="double-bounce2"></div>
+					</div>
 				</div>
 			</div>
-
-			<div class="row justify-content-md-center top-list"></div>
+			<div class="row justify-content-md-center top-list" style="visibility: hidden;"></div>
 
 			<div class="row" id="updatetime">
 				<p class="col-md-12" id="iku"> </p>
 			</div>
 		</div>
 	</div>
-	<!-- 模态框 -->
-	<div class="modal fade" id="setting" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">自定义页面</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+
+		<!-- 模态框 -->
+		<div class="modal fade" id="setting" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">自定义页面</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-				</div>
-				<div class="modal-body">
-					<div>
-						<div class="form-group">
-							<label for="accout">你的 Last.fm 账号名</label>
-							<input type="text" class="form-control" id="settinguser" aria-describedby="Help" placeholder="例如 'Finer04' ">
-							<small id="emailHelp" class="form-text text-muted">保存后，该页面的内容将会以你的 Last.fm 信息为准</small>
-						</div>
 					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="saveinfo">Save changes</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-	<div class="modal fade " id="em" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="ModalLabel">小吐槽</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		<span aria-hidden="true">&times;</span>
-		</button>
-				</div>
-				<div class="modal-body">
-					<div class="bd-callout bd-callout-warning">
-						Ver 1.3.2 (2018/08/05)
-					</div>
-
-					<div class="bd-callout bd-callout-tips">
-						<p>
-							核心代码基于 dcneiner/lastfm-recent-tracks-jquery-plugin 进行二次改造
-						</p>
-						<a href="https://github.com/finer04/Nowplaying">https://github.com/finer04/Nowplaying</a>
-					</div>
-					<div class="bd-callout bd-callout-tips">
-						本实时播放页面的介绍:
-						<a href="https://finer04.pw/archives/make-lastfm-nowplaying-page.html">自己的 Last.fm 实时播放的同步页面</a>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal fade " id="lastfminfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="ModalLabel">About My Last.fm</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		<span aria-hidden="true">&times;</span>
-		</button>
-				</div>
-				<div class="modal-body">
-					<div id="result">
-						<div class='row'>
-							<div class='col-md5' style='margin-left:15px;'>
-								<img src="" title="profile photo" data-toggle="tooltip" data-placement="bottom" id="info-img">
-							</div>
-							<div class='col-md-1'>
-							</div>
-							<div class='col-md-6'>
-								<h3>Username</h3>
-								<p id="info-username"></p>
-								<br>
-								<h3>Scrobbles</h3>
-								<p id="info-scrobbles"></p>
+					<div class="modal-body">
+						<div>
+							<div class="form-group">
+								<label for="accout">你的 Last.fm 账号名</label>
+								<input type="text" class="form-control" id="settinguser" aria-describedby="Help" placeholder="例如 'Finer04' ">
+								<small id="emailHelp" class="form-text text-muted">保存后，该页面的内容将会以你的 Last.fm 信息为准</small>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" onclick="window.open('https://www.last.fm/zh/user/Finer04')">Enter My last.fm page</button>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" id="saveinfo">Save changes</button>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="pre-album border-light">
-		<div class="pre-album-img float-left">
+
+
+		<div class="modal fade " id="em" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="ModalLabel">小吐槽</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+		</button>
+					</div>
+					<div class="modal-body">
+						<div class="bd-callout bd-callout-warning">
+							Ver 1.3.2 (2018/08/05)
+						</div>
+
+						<div class="bd-callout bd-callout-tips">
+							<p>
+								核心代码基于 dcneiner/lastfm-recent-tracks-jquery-plugin 进行二次改造
+							</p>
+							<a href="https://github.com/finer04/Nowplaying">https://github.com/finer04/Nowplaying</a>
+						</div>
+						<div class="bd-callout bd-callout-tips">
+							本实时播放页面的介绍:
+							<a href="https://finer04.pw/archives/make-lastfm-nowplaying-page.html">自己的 Last.fm 实时播放的同步页面</a>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
 		</div>
-		<div class="pre-album-tag">
-			<h5>previous song:</h5>
+		<div class="modal fade " id="lastfminfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="ModalLabel">About My Last.fm</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+		</button>
+					</div>
+					<div class="modal-body">
+						<div id="result">
+							<div class='row'>
+								<div class='col-md5' style='margin-left:15px;'>
+									<img src="" title="profile photo" data-toggle="tooltip" data-placement="bottom" id="info-img">
+								</div>
+								<div class='col-md-1'>
+								</div>
+								<div class='col-md-6'>
+									<h3>Username</h3>
+									<p id="info-username"></p>
+									<br>
+									<h3>Scrobbles</h3>
+									<p id="info-scrobbles"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" onclick="window.open('https://www.last.fm/zh/user/Finer04')">Enter My last.fm page</button>
+					</div>
+				</div>
+			</div>
 		</div>
-	</div>
-	<!-- JQuery 和 Bootstrap 核心 JS / 延迟加载 -->
-	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
-	<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
-	<script src="https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-	<script src="lastfm.jquery.js"></script>
-	<script src="lazyload.min.js"></script>
-	<!-- 后续脚本初始化与ajax初始化 -->
-	<script>
-		function init() {
-			NProgress.start();
-			$('#lastBox').lastplayed({
-				apikey: '6fedfd312dc47a4de168502018c02ca3',
-				username: $.getUrlParam('username'),
-				limit: 1,
-				coversize: 300,
-				refresh: 7,
+		<div class="pre-album border-light">
+			<div class="pre-album-img float-left">
+			</div>
+			<div class="pre-album-tag">
+				<h5>previous song:</h5>
+			</div>
+		</div>
+		<!-- JQuery 和 Bootstrap 核心 JS / 延迟加载 -->
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+		<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+		<script src="https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+		<script src="lastfm.jquery.js"></script>
+	<!--  <script src="getcloudmusic.js"></script> -->
+		<script src="lazyload.min.js"></script>
+		<!-- 后续脚本初始化与ajax初始化 -->
+		<script>
+			function init() {
+				NProgress.start();
+				$('#lastBox').lastplayed({
+					apikey: '6fedfd312dc47a4de168502018c02ca3',
+					username: $.getUrlParam('username'),
+					limit: 1,
+					coversize: 300,
+					refresh: 10,
+				});
+			}
+
+			$(document).ready(function() {
+				init();
 			});
-		}
-
-		$(document).ready(function() {
-			init();
-		});
-	</script>
+		</script>
 </body>
 
 </html>
