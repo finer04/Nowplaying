@@ -36,10 +36,11 @@ Athor: Ringo Rohe
 
   $('#saveinfo').click(function() {
     var account = $("#settinguser").val();
+    var live = $('input:radio:checked').val();
     if (account.length == 0) {
       alert('请输入你的 Last.fm 账号名');
     } else {
-      window.open("https://now.goubi.me/?username=" + account)
+      window.open("https://now.goubi.me/?username=" + account + "&liveplay=" + live);
     }
   });
 
@@ -101,7 +102,7 @@ Athor: Ringo Rohe
     type: "GET",
     url: "https://ws.goubi.me/2.0/?method=user.getinfo&user=" + $.getUrlParam('username') + "&api_key=6fedfd312dc47a4de168502018c02ca3&format=json",
     dataType: "json",
-    async: true,
+    async: false,
     success: function(data) {
       var user = "<div class='container'>";
       $.each(data, function(i, n) {
@@ -311,6 +312,7 @@ Athor: Ringo Rohe
             }
           }
 
+
           if (tracktime > lasttime || (tracknowplaying && options.shownowplaying)) {
 
             // 创造界面
@@ -356,6 +358,24 @@ Athor: Ringo Rohe
               }
             }
 
+            //同步播放，由于手头没有国内服务器，故作为实验性功能
+
+            if ($.getUrlParam('liveplay') == 'on') {
+
+              searchkeyword(track.name, track.artist['#text']);
+
+              const ap = new APlayer({
+                container: document.getElementById('aplayer'),
+                mini: true,
+                autoplay: true,
+                audio: [{
+                  name: track.name,
+                  artist: track.artist['#text'],
+                  url: realmusic,
+                  cover: repic(track.image[3]['#text']),
+                }]
+              });
+            }
 
             // ----------------- IMAGE -----------------
             //如果存在图像，给img标签添加属性，用lazyload给addbgimage赋该图像的地址（否则在外面会获取到两个值）

@@ -12,39 +12,35 @@
 var nowid;
 
 // Stuff to do as soon as the DOM is ready
-// searchkeyword('オレンジ色の決意', "yuiko");
 
 function searchkeyword(name, artist) {
   $.ajax({
     type: "GET",
     url: "http://127.0.0.1:3000/search?",
     data: {
-      'keywords': name + artist
+    'keywords': name +' '+ artist //加空格以便提高准确率
     },
     dataType: "json",
-    async: true,
-    success: function(data) {
-      $.each(data, function(i, a) {
-       songid = a.songs[0].id;
-        init(songid);
-      });
+    async: false,
+    success: function(result) {
+        songid = result.result.songs[0].id;
+        initmusic(songid);
     }
   });
 }
 
-
-function init(id) {
+var realmusic ;
+function initmusic(id) {
   $.ajax({
     type: "GET",
     url: "http://127.0.0.1:3000/music/url?",
     data: {
       'id': id
     },
+    async: false,
     dataType: "json",
     success: function(data) {
-      $.each(data, function(i, a) {
-        $('audio').attr("src", a[0].url);
-      });
+      realmusic = data.data[0].url;
     }
   });
 }
