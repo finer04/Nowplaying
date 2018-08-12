@@ -8,7 +8,6 @@ Athor: Ringo Rohe
 
 (function($) {
 
-
   //地址栏获取参数，照抄 https://blog.csdn.net/FungLeo/article/details/49404789
   (function($) {
     $.getUrlParam = function(name) {
@@ -365,10 +364,10 @@ Athor: Ringo Rohe
               searchkeyword(track.name, track.artist['#text']);
 
               const ap = new APlayer({
-                container: document.getElementById('aplayer'),
-                mini: true,
-                autoplay: true,
-                audio: [{
+                  container: document.getElementById('aplayer'),
+                  mini: true,
+                  autoplay: true,
+                  audio: [{
                   name: track.name,
                   artist: track.artist['#text'],
                   url: realmusic,

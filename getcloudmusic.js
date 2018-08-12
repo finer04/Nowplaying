@@ -16,7 +16,7 @@ var nowid;
 function searchkeyword(name, artist) {
   $.ajax({
     type: "GET",
-    url: "http://127.0.0.1:3000/search?",
+    url: "https://api.fil.fi:444/search?",
     data: {
     'keywords': name +' '+ artist //加空格以便提高准确率
     },
@@ -33,7 +33,7 @@ var realmusic ;
 function initmusic(id) {
   $.ajax({
     type: "GET",
-    url: "http://127.0.0.1:3000/music/url?",
+    url: "https://api.fil.fi:444/music/url?",
     data: {
       'id': id
     },

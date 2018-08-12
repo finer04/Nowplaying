@@ -389,6 +389,10 @@ body, form, div, ul, ol, li, h1, h2, h3, h4, h5, h6, table, tr, th, td, p, input
     top: 43vh;
     width: 100%;
     font-size: 7vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
   }
   .lastfm ul li .track p {
     text-align: center;
