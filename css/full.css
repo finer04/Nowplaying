@@ -398,6 +398,10 @@ body, form, div, ul, ol, li, h1, h2, h3, h4, h5, h6, table, tr, th, td, p, input
     text-align: center;
     font-size: 8vw;
   }
+
+  .pre-album-tag .tag-songname {
+    font-size: .9rem;
+  }
 }
 
 

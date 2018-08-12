@@ -85,7 +85,7 @@ Athor: Ringo Rohe
   function checksong(songname) {
     var checkname = songname;
     var checklength = songname.length;
-    var num = 50;
+    var num = 45;
     if (checklength > num) {
       songname = songname.substring(0, num) + '...';
       return songname;
@@ -334,7 +334,7 @@ Athor: Ringo Rohe
 
               var tagsn = $('<p>', {
                 class: 'tag-songname',
-                html: predata.name,
+                html: checksong(predata.name),
               }).appendTo(prealbum);
 
               var tagartist = $('<p>', {
@@ -443,7 +443,7 @@ Athor: Ringo Rohe
 
             // ----------------- TRACK -----------------
             var $track = $("<div>", {
-              class: 'track animated fadeIn',
+              class: 'track animated fadeIn px-1',
               html: '<p>' + checksong(track.name) + '</p>'
             }).appendTo(listitem);
 
