@@ -46,7 +46,9 @@ function initmusic(id) {
     async: false,
     dataType: "json",
     success: function(data) {
-      realmusic = data.data[0].url;
+      str = data.data[0].url;
+      fix = str.replace(/http:/, "https:");
+      realmusic = fix;
     }
   });
 }
