@@ -20,6 +20,9 @@ function searchkeyword(name, artist) {
     data: {
     'keywords': name +' '+ artist //加空格以便提高准确率
     },
+    xhrFields: {
+      withCredentials: true
+   },
     dataType: "json",
     async: false,
     success: function(result) {
@@ -37,6 +40,9 @@ function initmusic(id) {
     data: {
       'id': id
     },
+    xhrFields: {
+      withCredentials: true
+   },
     async: false,
     dataType: "json",
     success: function(data) {
