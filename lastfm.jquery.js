@@ -22,8 +22,8 @@ Athor: Ringo Rohe
 
   //监听 show 按钮,事件类
 
-  $('#showtrack').click(function() {
-    showtrack();
+  $('#showtrack').on("click",function() {
+    showtrack('3month');
   });
 
   $('#refresh').click(function() {
@@ -38,7 +38,7 @@ Athor: Ringo Rohe
     var account = $("#settinguser").val();
     var live = $('input:radio:checked').val();
     if (account.length == 0) {
-      alert('请输入你的 Last.fm 账号名');
+      account = 'finer04';
     } else {
       window.open("https://now.goubi.me/?username=" + account + "&liveplay=" + live);
     }
@@ -59,7 +59,6 @@ Athor: Ringo Rohe
 
 
   //加载图像完毕才淡入到背景，参考 https://www.jianshu.com/p/629ce1f9253f
-
   function addbgimage(url) {
     var background = new Image();
     background.src = url;
@@ -82,8 +81,8 @@ Athor: Ringo Rohe
     var bg = str.replace(/300x300\//, "").replace(/lastfm-img2.akamaized.net/, "lastfmimg.umi.pw");
     return bg;
   }
-  //检查字数，防止超出
 
+  //检查字数，防止超出
   function checksong(songname) {
     var checkname = songname;
     var checklength = songname.length;
@@ -96,6 +95,10 @@ Athor: Ringo Rohe
     }
   }
 
+  //首字母大写，因为用 text-transform: capitalize 会将 's 变成大写
+  function firstUpperCase(str) {
+    return str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
+  }
 
   //ajax 获取该用户的 lastfm 信息
   var useravater;
@@ -109,7 +112,7 @@ Athor: Ringo Rohe
       $.each(data, function(i, n) {
         useravater = n.image[2]['#text'];
         $('#info-img').attr('src', useravater);
-        $('<img src="' + useravater + '" width="30" height="30" class="d-inline-block align-top rounded-circle" id="navimg" alt="">').insertBefore('.navbar-brand')
+        $('<img src="' + useravater + '" width="30" height="30" class="d-inline-block align-top rounded-circle mx-2" id="navimg" alt="">').insertBefore('.navbar-brand')
         $('#info-username').append(n.name);
         $('#info-scrobbles').append(n.playcount + ' 次');
       });
@@ -126,27 +129,52 @@ Athor: Ringo Rohe
   });
 
 
-
 //点击 show toptrack 按钮事件
 var check = false; //默认关闭showtrack状态
-function showtrack() {
+var open = false;
+function showtrack(date) {
   if (!check) {
-    gettoptrack();
     $('.lastfm').fadeOut(400);
-    $('.toptrack').addClass('animated zoomIn').show();
+    $('.toptrack').animateCss('zoomIn').show();
     $('#refresh').html('Back');
     $('animated zoomIn').removeClass('animated zoomIn');
+
+    if (!open){
+    open = true;
+    setTimeout(function() {
+    $(".toptrack h2").append(firstUpperCase($.getUrlParam('username')) + '\'s Top Tracks Ranking');
+    $(".toptrack p:first").append('Default: Last 90 days (Top 12)');
+
+    //生成选项组
+
+    var days = ['Last 7 days','Last 30 days','Last 180 days','Last 365 days','All time'];
+    var p ;
+    /*
+    for( p in days) {
+    $('<button>',{
+      type : 'button',
+      class : 'btn btn-secondary',
+      html : days[p],
+      id : 'date' + p,
+    }).appendTo('#group');
+  }*/
+  }, 200);
     check = true; //已开启showtrack
   }
+}
+gettoptrack(date);
 }
 
 function refresh() {
   if (check) {
-    $('.toptrack').hide(400);
-    $('.lastfm').fadeIn(1000);
-    $('#prebg').fadeIn(600);
-    $('#refresh').html('Refresh');
-    check = false;
+      $('.toptrack').hide(1500);
+      $('.lastfm').fadeIn(1400);
+      $('#prebg').fadeIn(300);
+      $('#refresh').html('Refresh');
+      $('.toptrack p:first,.toptrack h2,#group').empty();
+      $('.top-list').empty();
+      check = false;
+      open = false;
   } else if (!check) {
     init();
   }
@@ -155,15 +183,14 @@ function refresh() {
 
 //获取用户专辑排名
 var imgload = 1;
-var gottrack = false;
 
-function gettoptrack() {
+  function gettoptrack(date) {
   var limit = 12;
   $.ajax({
     type: "GET",
-    url: "https://ws.goubi.me/2.0/?method=user.gettopalbums&limit=" + limit + "&period=3month&user=" + $.getUrlParam('username') + "&api_key=6fedfd312dc47a4de168502018c02ca3&format=json",
+    url: "https://ws.goubi.me/2.0/?method=user.gettopalbums&limit=" + limit + "&period=" + date +"&user=" + $.getUrlParam('username') + "&api_key=6fedfd312dc47a4de168502018c02ca3&format=json",
     dataType: "json",
-    async: true,
+    async: false,
     success: function(data) {
       $.each(data, function(i, rank) {
         //对图片进行尺寸更改，并且检验是否无图
@@ -172,25 +199,14 @@ function gettoptrack() {
           return (!url) ? 'img/no.jpg' : url;
         }
 
-        //首字母大写，因为用 text-transform: capitalize 会将 's 变成大写
-        function firstUpperCase(str) {
-          return str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
-        }
-
-        //如果获取过信息就不执行
-        if (!gottrack) {
-          gottrack = true;
-          $(".toptrack h2").append(firstUpperCase($.getUrlParam('username')) + '\'s Top Tracks Ranking');
-          $(".toptrack p:first").append('Default: Last 90 days (Top 12)');
-
           //生成模板
-          for (i = 0; i < limit; i++) {
+          for (var i = 0; i < limit; i++) {
             makelist(rank.album[i].name, rank.album[i].artist.name, rank.album[i].playcount, checkimg(rank.album[i].image[3]['#text']));
           }
 
           //当所有专辑图片加载完毕后才显示排名
           var imgloading = new Array();
-          for (i = 0; i < limit; i++) {
+          for (var i = 0; i < limit; i++) {
             imgloading[i] = new Image();
             imgloading[i].src = checkimg(rank.album[i].image[3]['#text']);
             imgloading[i].onload = function() {
@@ -200,12 +216,10 @@ function gettoptrack() {
                 $('.top-list').attr('style', '').addClass('animated fadeIn');
               }
             }
-          }
         }
       });
     }
   });
-
 }
 
 
@@ -213,19 +227,12 @@ function gettoptrack() {
 var x = 0;
 
 function makelist(songname, artist, playtimes, img) {
-  //由于生成DOM对象需要用 APPENDTO，不会应用故用字符串添加算了
-  //var imgp = '<div class="col-md-3 top-track-pic"><img src="'+ img +'" class="toptrack-img rounded"></div>';
-  //var info = '<div class="col top-track-info pt-2"><h4 class="top-songname">' + songname +'</h4>' + '<p class="lead">'+ artist + '</p>' + '<p class="lead">'+ playtimes  +' plays</p>';
 
   var info = {
     name: "<h4>" + songname + '</h4>',
     singer: '<p class="lead">' + artist + '</p>',
     count: '<p class="lead">' + playtimes + ' plays </p>',
   };
-
-  $("<li>", {
-    class: 'col-md-3 mt-5 px-3'
-  }).appendTo('.top-list');
 
   var $imgp = $("<img>", {
     class: 'col top-track-pic',
@@ -237,7 +244,11 @@ function makelist(songname, artist, playtimes, img) {
     html: info.name + info.singer + info.count,
   });
 
-  $('.top-list li').eq(x).append($imgp).append($rankinfo);
+  $("<li>", {
+    class: 'col-md-3 mt-5 px-3'
+  }).append($imgp).append($rankinfo).appendTo('.top-list');
+
+  //$('.top-list li').eq(x).append($imgp).append($rankinfo);
 
   x++;
 }
@@ -271,6 +282,7 @@ var recentTracksClass = function(elem, options) {
     $myDiv.children('.error').remove();
 
     //create URL，nowplaying用
+    //为什么要加上callback，因为防止json的缓存
     var url = 'https://ws.goubi.me/2.0/?callback=?',
       params = {
         method: "user.getrecenttracks",
@@ -337,11 +349,14 @@ var recentTracksClass = function(elem, options) {
             var predata = data.recenttracks.track[0];
             $('.pre-album').addClass('animated fadeInLeft');
 
+            var preani;
             $(function() {
-              setTimeout(function() {
+            preani =  setTimeout(function() {
                 $('.pre-album').removeClass('fadeInLeft').addClass('fadeOutLeft');
               }, 5000);
+
             })
+            clearTimeout(preani);
 
             var prealbum = $('.pre-album-tag');
 
@@ -481,7 +496,7 @@ var recentTracksClass = function(elem, options) {
 
           // ---------------- ARTIST -----------------
           var $artist = $("<div>", {
-            class: 'artist animated fadeIn',
+            class: 'artist animated fadeIn text-center',
             html: '<p>' + track.artist['#text'] + '</p>'
           }).appendTo(listitem);
 
@@ -496,7 +511,7 @@ var recentTracksClass = function(elem, options) {
 
           // ---------------- ALBUM ------------------
           var $album = $("<div>", {
-            class: 'album animated fadeInUp',
+            class: 'album animated fadeInUp w-100 text-truncate mx-1',
             html: 'Album : ' + track.album['#text']
           }).appendTo(listitem);
 

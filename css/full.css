@@ -266,7 +266,7 @@ body, form, div, ul, ol, li, h1, h2, h3, h4, h5, h6, table, tr, th, td, p, input
 
 .lastfm ul li .artist {
   margin: 0px;
-  font-size: 6vh;
+  font-size: 2rem;
   position: fixed;
   top: 29vh;
   -webkit-animation-duration: 2s;
@@ -274,13 +274,10 @@ body, form, div, ul, ol, li, h1, h2, h3, h4, h5, h6, table, tr, th, td, p, input
 }
 
 .lastfm ul li .album {
-  margin: 0px;
-  font-size: 3vh;
+  font-size: 1rem;
   position: fixed;
   bottom: 10px;
-  color: #908e8e8f;
-  font-weight: 200;
-  text-shadow: 1px 2px 3px rgba(0, 0, 0, 0.8);
+  color: #808080;
 }
 
 .date img {
@@ -357,7 +354,7 @@ body, form, div, ul, ol, li, h1, h2, h3, h4, h5, h6, table, tr, th, td, p, input
   }
   .lastfm ul li .artist {
     left: 0;
-    width: 100%
+    width: 100%;
   }
   .lastfm ul li .artist p {
     text-align: center;
@@ -377,12 +374,10 @@ body, form, div, ul, ol, li, h1, h2, h3, h4, h5, h6, table, tr, th, td, p, input
     position: fixed;
   }
   .lastfm ul li .album {
-    margin: 0px;
-    font-size: 4vw;
+    font-size: 0.9rem;
     position: fixed;
-    bottom: 10px;
-    color: #908e8e8f;
-    font-weight: 200;
+    bottom: 5px;
+    left: 5px;
   }
   .lastfm ul li .track {
     left: 0;
