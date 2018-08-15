@@ -471,7 +471,7 @@ var recentTracksClass = function(elem, options) {
 
           // ----------------- TRACK -----------------
           var $track = $("<div>", {
-            class: 'track animated fadeIn px-1',
+            class: 'track animated fadeIn px-1 mt-3',
             html: '<p>' + checksong(track.name) + '</p>'
           }).appendTo(listitem);
 
